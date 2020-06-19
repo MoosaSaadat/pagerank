@@ -40,10 +40,7 @@ def crawl(directory):
 
     # Only include links to other pages in the corpus
     for filename in pages:
-        pages[filename] = set(
-            link for link in pages[filename]
-            if link in pages
-        )
+        pages[filename] = set(link for link in pages[filename] if link in pages)
 
     return pages
 
@@ -82,6 +79,15 @@ def iterate_pagerank(corpus, damping_factor):
     PageRank values should sum to 1.
     """
     raise NotImplementedError
+
+
+def ranks_converged(new_ranks, old_ranks):
+    for page in new_ranks:
+        diff = new_ranks[page] - old_ranks[page]
+        if round(diff, 3) > 0:
+            print("Not converged")
+            return False
+    return True
 
 
 if __name__ == "__main__":
