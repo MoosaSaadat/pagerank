@@ -1,2 +1,3 @@
 # Exclude virtual environment
 env/
+__pycache__/
