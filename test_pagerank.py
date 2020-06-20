@@ -12,6 +12,19 @@ class TestPageRank(unittest.TestCase):
         new_rank = {"1.html": 0.501552, "2.html": 0.123470, "3.html": 0.353614}
         self.assertFalse(pr.ranks_converged(new_rank, old_rank))
 
+    def test_iterate_pagerank(self):
+        corpus = pr.crawl("corpus0")
+        ranks = pr.iterate_pagerank(corpus, pr.DAMPING)
+
+        result = {
+            "1.html": 0.2198,
+            "2.html": 0.4294,
+            "3.html": 0.2198,
+            "4.html": 0.1311,
+        }
+        for page in ranks:
+            self.assertAlmostEqual(ranks[page], result[page], 4)
+
     def test_transition_model(self):
         corpus = {
             "1.html": {"2.html", "3.html"},
