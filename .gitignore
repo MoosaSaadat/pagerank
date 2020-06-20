@@ -1,3 +1,4 @@
-# Exclude virtual environment
+# Exclude virtual environment, pycache, vscode settings
 env/
 __pycache__/
+.vscode/
