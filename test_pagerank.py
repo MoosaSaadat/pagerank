@@ -3,6 +3,15 @@ import pagerank as pr
 
 
 class TestPageRank(unittest.TestCase):
+    def test_ranks_converged(self):
+        old_rank = {"1.html": 0.501000, "2.html": 0.123470, "3.html": 0.354614}
+        new_rank = {"1.html": 0.501352, "2.html": 0.123470, "3.html": 0.353614}
+        self.assertTrue(pr.ranks_converged(new_rank, old_rank))
+
+        old_rank = {"1.html": 0.501000, "2.html": 0.123470, "3.html": 0.354614}
+        new_rank = {"1.html": 0.501552, "2.html": 0.123470, "3.html": 0.353614}
+        self.assertFalse(pr.ranks_converged(new_rank, old_rank))
+
     def test_transition_model(self):
         corpus = {
             "1.html": {"2.html", "3.html"},
