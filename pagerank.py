@@ -57,14 +57,19 @@ def transition_model(corpus, page, damping_factor):
     # Total pages
     N = len(corpus)
 
-    # Divide 1 - d among all pages
     model = dict()
     for p in corpus:
-        model[p] = (1 - damping_factor) / N
 
-    # Divide d among connected pages
-    for link in corpus[page]:
-        model[link] += damping_factor / len(corpus[page])
+        # Divide 1 - d among all pages
+        pageRank = (1 - damping_factor) / N
+
+        # If no connections, add eq probability
+        if len(corpus[page]):
+            if p in corpus[page]:
+                pageRank += damping_factor / len(corpus[page])
+        else:
+            pageRank += damping_factor / len(corpus[page])
+        model[p] = pageRank
 
     return model
 
