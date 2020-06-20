@@ -13,17 +13,30 @@ class TestPageRank(unittest.TestCase):
         self.assertFalse(pr.ranks_converged(new_rank, old_rank))
 
     def test_iterate_pagerank(self):
+
+        # Test Corpus 0
         corpus = pr.crawl("corpus0")
         ranks = pr.iterate_pagerank(corpus, pr.DAMPING)
+        rankSum = 0
+        for rank in ranks.values():
+            rankSum += rank
+        self.assertAlmostEqual(rankSum, 1, 1)
 
-        result = {
-            "1.html": 0.2198,
-            "2.html": 0.4294,
-            "3.html": 0.2198,
-            "4.html": 0.1311,
-        }
-        for page in ranks:
-            self.assertAlmostEqual(ranks[page], result[page], 4)
+        # Test Corpus 1
+        corpus = pr.crawl("corpus1")
+        ranks = pr.iterate_pagerank(corpus, pr.DAMPING)
+        rankSum = 0
+        for rank in ranks.values():
+            rankSum += rank
+        self.assertAlmostEqual(rankSum, 1, 1)
+
+        # Test Corpus 2
+        corpus = pr.crawl("corpus2")
+        ranks = pr.iterate_pagerank(corpus, pr.DAMPING)
+        rankSum = 0
+        for rank in ranks.values():
+            rankSum += rank
+        self.assertAlmostEqual(rankSum, 1, 1)
 
     def test_transition_model(self):
 
@@ -52,6 +65,32 @@ class TestPageRank(unittest.TestCase):
         result = {"1.html": 0.333, "2.html": 0.333, "3.html": 0.333}
         for page, rank in pr.transition_model(corpus, page, damping_factor).items():
             self.assertAlmostEqual(result[page], rank, 3)
+
+    def test_sample_pagerank(self):
+
+        # Test Corpus 0
+        corpus = pr.crawl("corpus0")
+        ranks = pr.iterate_pagerank(corpus, pr.DAMPING)
+        rankSum = 0
+        for rank in ranks.values():
+            rankSum += rank
+        self.assertAlmostEqual(rankSum, 1, 1)
+
+        # Test Corpus 1
+        corpus = pr.crawl("corpus1")
+        ranks = pr.iterate_pagerank(corpus, pr.DAMPING)
+        rankSum = 0
+        for rank in ranks.values():
+            rankSum += rank
+        self.assertAlmostEqual(rankSum, 1, 1)
+
+        # Test Corpus 2
+        corpus = pr.crawl("corpus2")
+        ranks = pr.iterate_pagerank(corpus, pr.DAMPING)
+        rankSum = 0
+        for rank in ranks.values():
+            rankSum += rank
+        self.assertAlmostEqual(rankSum, 1, 1)
 
 
 if __name__ == "__main__":
