@@ -26,6 +26,8 @@ class TestPageRank(unittest.TestCase):
             self.assertAlmostEqual(ranks[page], result[page], 4)
 
     def test_transition_model(self):
+
+        # Links exist
         corpus = {
             "1.html": {"2.html", "3.html"},
             "2.html": {"3.html"},
@@ -37,6 +39,19 @@ class TestPageRank(unittest.TestCase):
         result = {"1.html": 0.05, "2.html": 0.475, "3.html": 0.475}
         for page, rank in pr.transition_model(corpus, page, damping_factor).items():
             self.assertAlmostEqual(result[page], rank)
+
+        # No links exist
+        corpus = {
+            "1.html": {},
+            "2.html": {"3.html"},
+            "3.html": {"2.html"},
+        }
+        page = "1.html"
+        damping_factor = 0.85
+
+        result = {"1.html": 0.333, "2.html": 0.333, "3.html": 0.333}
+        for page, rank in pr.transition_model(corpus, page, damping_factor).items():
+            self.assertAlmostEqual(result[page], rank, 3)
 
 
 if __name__ == "__main__":
