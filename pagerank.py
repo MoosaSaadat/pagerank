@@ -84,17 +84,17 @@ def sample_pagerank(corpus, damping_factor, n):
     PageRank values should sum to 1.
     """
     pageRanks = {page: 0 for page in corpus}
-    
+
     # Randomly select a page to start
     currPage = random.choice(list(corpus.keys()))
     for _ in range(n):
-        
+
         pageRanks[currPage] += 1
 
         model = transition_model(corpus, currPage, damping_factor)
         currPage = random.choice(list(model.keys()))
-    
-    return {page: rank/n for page, rank in pageRanks.items()}
+
+    return {page: rank / n for page, rank in pageRanks.items()}
 
 
 def iterate_pagerank(corpus, damping_factor):
@@ -121,12 +121,14 @@ def iterate_pagerank(corpus, damping_factor):
         for currPage in corpus:
             currPageRank = (1 - damping_factor) / N
             for page, links in corpus.items():
-                if page != currPage and currPage in links:
-                    currPageRank += damping_factor * (
-                        prevRanks[page] / len(corpus[page])
-                    )
+                if links:
+                    if page != currPage and currPage in links:
+                        currPageRank += damping_factor * (
+                            prevRanks[page] / len(corpus[page])
+                        )
+                else:
+                    currPageRank += damping_factor * (prevRanks[page] / N)
             currRanks[currPage] = currPageRank
-            # print(f"currPage -> {currPage}, {currPageRank}")
 
         # Stop if Ranks converged
         if ranks_converged(currRanks, prevRanks):
@@ -145,7 +147,6 @@ def ranks_converged(new_ranks, old_ranks):
         # Difference to the nearest 100th
         diff = new_ranks[page] - old_ranks[page]
         if round(diff, 3) > 0:
-            # print("Not converged")
             return False
     return True
 
