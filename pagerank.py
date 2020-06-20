@@ -78,14 +78,46 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
+    # Total number of pages
+    N = len(corpus)
+
+    # Start with 1/N for all pages
+    prevRanks = dict()
+    for page in corpus:
+        prevRanks[page] = 1 / N
+
+    while True:
+        currRanks = dict()
+
+        # Calculate PageRank
+        for currPage in corpus:
+            currPageRank = (1 - damping_factor) / N
+            for page, links in corpus.items():
+                if page != currPage and currPage in links:
+                    currPageRank += damping_factor * (
+                        prevRanks[page] / len(corpus[page])
+                    )
+            currRanks[currPage] = currPageRank
+            # print(f"currPage -> {currPage}, {currPageRank}")
+
+        # Stop if Ranks converged
+        if ranks_converged(currRanks, prevRanks):
+            return currRanks
+
+        prevRanks = currRanks.copy()
 
 
 def ranks_converged(new_ranks, old_ranks):
     for page in new_ranks:
+
+        # New probability not calculated
+        if not new_ranks[page]:
+            return False
+
+        # Difference to the nearest 100th
         diff = new_ranks[page] - old_ranks[page]
         if round(diff, 3) > 0:
-            print("Not converged")
+            # print("Not converged")
             return False
     return True
 
