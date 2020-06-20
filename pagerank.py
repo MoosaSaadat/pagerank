@@ -68,7 +68,7 @@ def transition_model(corpus, page, damping_factor):
             if p in corpus[page]:
                 pageRank += damping_factor / len(corpus[page])
         else:
-            pageRank += damping_factor / len(corpus[page])
+            pageRank += damping_factor / N
         model[p] = pageRank
 
     return model
